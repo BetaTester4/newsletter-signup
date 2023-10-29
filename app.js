@@ -1,5 +1,6 @@
 const express = require("express")
 const bodyParser=require('body-parser')
+const validator = require('validator'); 
 
 const app=express()
 app.listen('3000',()=>{
@@ -23,10 +24,15 @@ app.get('/',(req,res)=>{
 })
 
 app.post('/',(req,res)=>{
-    // let firstName=req.body.fname;
-    // let lastName=req.body.lname;
-    // let email=req.body.email;
- console.log(req.body)
-    // console.log(firstName,lastName,email)
+    const { fname, lname, email } = req.body;
+
+    // Check if all fields are filled correctly and if email is valid
+    if (fname && lname && validator.isEmail(email)) {
+        // Redirect to success.html
+        res.sendFile(__dirname + '/success.html');
+    } else {
+        // Redirect to failure.html
+        res.sendFile(__dirname + '/failure.html');
+    }
 })
 
